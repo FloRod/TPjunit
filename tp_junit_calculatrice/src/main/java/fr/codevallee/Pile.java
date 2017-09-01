@@ -1,7 +1,5 @@
 package fr.codevallee;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,8 +35,8 @@ public class Pile<T> {
 
 	public void peek(T item) {
 		int position = this.liste.indexOf(item);
-		push(item);
 		this.liste.remove(position);
+		this.push(item);
 	}
 
 	
