@@ -1,0 +1,13 @@
+# But : Implémenter une classe et réfléchir aux différents tests permettant de garantir la robustesse d'une classe'.
+
+Nous allons créer une classe Pile (et ne pas utiliser la classe Stack :-) et sa classe de tests.
+
+Créez une classe pile avec les méthodes suivantes :
+	Un constructeur vide ;
+	Un constructeur prenant une taille comme argument ;
+	Ajout d’un nouvel élément push(newItem) ;
+	Retrait de l’élément au sommet de la pile pop() ;
+	Retrait de tous les éléments popAll() ;
+	Renvoie de l’élément en sommet de pile peek().
+
+	Définissez un jeu de test et une classe de cas de tests pour tester la robustesse de votre implémentation.

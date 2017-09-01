@@ -1,0 +1,87 @@
+﻿# BUT : Tester un TP JPA avec Junit.
+
+1. Récupérer votre projet facturation (ou un autre...)
+
+2. dans ce projet, dans le répertoire /src/test/resources/META-INF, ajoutez ce fichier :
+
+<persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+	version="2.0" xmlns="http://java.sun.com/xml/ns/persistence">
+
+	<persistence-unit name="test" transaction-type="RESOURCE_LOCAL">
+		<class>fr.codevallee.formation.tp.modele.Demo</class>
+		<properties>
+
+			<property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect" />
+			<property name="hibernate.hbm2ddl.auto" value="create" />
+			<property name="hibernate.connection.driver_class" value="org.hsqldb.jdbcDriver" />
+			<property name="hibernate.connection.username" value="sa" />
+			<property name="hibernate.connection.password" value="" />
+			<property name="hibernate.connection.url" value="jdbc:hsqldb:mem:test" />
+			<property name="hibernate.show_sql" value="true" />
+
+		</properties>
+
+	</persistence-unit>
+</persistence>
+
+Ce fichier configure une nouvelle unité de persistance basée avec une base de données HSQLDB (La différence avec les autres bases de données, est qu'elle est basée prioritairement sur un stockage en RAM.).
+!!! Notez la présence de la balise Class. Vous devez y ajouter les entités à tester.
+
+3 Ajoutez dans le pom la dépendance suivante : 
+
+	<dependency>
+		<groupId>hsqldb</groupId>
+		<artifactId>hsqldb</artifactId>
+		<version>1.8.0.10</version>
+		<scope>test</scope>
+	</dependency>
+
+4 Tester votre projet en vous inspirant de cette classe :
+
+package tp2_jpa_simple;
+
+import java.io.FileNotFoundException;
+import java.sql.SQLException;
+
+import javax.persistence.*;
+
+import org.junit.*;
+
+import fr.codevallee.formation.tp.modele.Demo;
+
+import static org.junit.Assert.*;
+
+public class BDDTest {
+
+	protected static EntityManagerFactory emf;
+	protected static EntityManager em;
+
+	@BeforeClass
+	public static void init() throws FileNotFoundException, SQLException {
+		emf = Persistence.createEntityManagerFactory("test");
+		em = emf.createEntityManager();
+	}
+
+	@Test
+	public void testInsert() {
+		Demo demo = new Demo();
+
+		em.getTransaction().begin();
+		em.persist(demo);
+		em.getTransaction().commit();
+
+		TypedQuery<Demo> query = em.createQuery("from Demo", Demo.class);
+		System.out.println(query.getResultList().size());
+		
+		assertEquals(1, 1);
+	}
+
+	@AfterClass
+	public static void tearDown() {
+		em.clear();
+		em.close();
+		emf.close();
+	}
+
+}

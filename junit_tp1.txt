@@ -1,0 +1,69 @@
+﻿BUT : Nous souhaitons implémenter une calculatrice en utilisant l'approche Test Development Driven.
+
+# Initialisation du projet
+
+1 Créer un projet maven tp_junit_calculatrice. Ajoutez la dépendance suivante :
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+
+2 En plus de l'arborescence src/main/java, vous devez avoir src/test/java.
+  Vous déposerez vos tests dans ce répertoire.
+
+3 Dans le répertoire src/test/java/fr/codevallee/, ajoutez la classe CalculatriceTest
+
+4 Ajoutez la méthode suivante :
+
+	@Test
+	public void premierTest() throws Exception {
+		assertEquals(1, 1);
+	}
+
+    Et n'oubliez d'ajouter l'import suivant import static org.junit.Assert.*;
+
+5 Dans Eclipse, effectuez un clic droit sur votre projet "Run As" -> "Junit" et observez le résultat.
+
+6 En ligne de commandes, dans votre projet, entrez la commande "mvn test"
+
+# Ecriture des tests 
+
+7 Dans le répertoire src/main/java/fr/codevallee, ajoutez l’interface Calculatrice.
+  Ajoutez à votre interface une méthode double addition (double a, double b);
+
+8 Dans votre classe de test, ajoutez les attributs :
+Calculatrice calculatrice;
+
+9 Maintenant, nous allons ajouter un test sans avoir déjà codé son implémentation. Ajoutez le test suivant :
+
+	@Test
+	public void additionTest() throws Exception {
+		double a = 1;
+		double b = 3;
+		double retour = calculatrice.addition(a, b);
+		assertEquals(retour, 4.0, 0.0);
+	}
+
+--> Si vous exécutez les tests, ils ne marcheront pas.
+
+10 Maintenant, créez une classe qui implémente l'interface Calculatrice nommée CalculatriceImpl et implémentez la méthode addition.
+
+11 Ajoutez à votre classe de test la méthode suivante :
+
+	@Before
+	public void initialition() {
+		calculatrice = new CalculatriceImpl();
+	}
+
+12 Votre test fonctionne !
+
+13 Ajoutez les tests suivants :
+
+- tester la multiplication
+- tester la soustraction
+- tester la division (6/3)
+- tester si 12 / 0 produit bien une erreur (à vous de produire l'erreur en utilisant throw new ArithmeticException() )
+Pour ce dernier test, utilisez @Test(expected = ArithmeticException.class)

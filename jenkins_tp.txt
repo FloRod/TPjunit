@@ -1,0 +1,134 @@
+####################################################################
+## 1- Mon premier Job
+####################################################################
+
+
+- Cliquer sur `Nouveau Item`
+
+- Choisir `Construire un projet free-style`
+
+- Aller sur Build > Ajouter une étape au build > Exécuter une ligne de commande batch Windows
+
+- Dans le nouveau textArea qui vient d'apparaitre, vous pouvez saisir des commandes batch. Celles-ci seront éxécutées lorsque le Job sera déclenché.
+
+- Ajouter
+
+```
+    echo "Mon premier job"
+```
+
+- Sauvegarder
+
+- Lancer le job manuellement en cliquant sur le bouton "Lancer un build"
+
+- Afficher les log du jobs
+
+
+
+
+####################################################################
+### 2- "Mon premier job en erreur"
+####################################################################
+
+- Cliquer sur `Nouveau Item`
+
+- Tout en bas de la liste choisir `Copier depuis` et taper le nom du premier job
+
+- Modidier la balise echo
+
+```
+     echo "Mon premier job en erreur"
+```
+
+- Ajouter dans les commandes shell `exit 1`
+
+- Sauvegarder
+
+- Lancer le job manuellement en cliquant sur le bouton "Lancer un build"
+
+- Afficher les log du jobs
+
+- supprimer `exit 1` du shell
+
+- Lancer le job manuellement en cliquant sur le bouton "Lancer un build"
+
+- Regarder l'historique
+
+
+
+
+####################################################################
+### 3 "Mon premier job cron"
+####################################################################
+
+Jusque maintenant, cela nécessite encore une intervention manuelle afin de déclencher un job. Nous allons définir un déclenchement automatiques avec cron
+
+- Cliquer sur `Nouveau Item`
+
+- Tout en bas de la liste choisir `Copier depuis` et taper le nom du premier job
+
+- Cocher Ce qui déclenche le build > Construire périodiquement
+
+- Ajouter dans le textArea
+
+```
+    * * * * *               // Permet de définir une périodicité => toutes les minutes
+```
+
+- Modidier la balise echo
+
+```
+     echo "Mon premier job cron"
+```
+
+- Sauvegarder
+
+- Attendre quelques minutes pour bien voir le job se lancer plusieurs fois
+
+- Modifier la périodicité à tous les quarts d'heure (*/15 * * * *)
+
+
+
+####################################################################
+### 4- Cloner un projet MAVEN (avec des tests unitaires si possible)
+####################################################################
+
+- Cliquer sur `Nouveau Item`
+
+- Choisir `Construire un projet free-style`
+
+- Cocher Github project => Mettre l'URL de votre repo github
+
+- Gestion de code source > cocher git
+
+- copier l'URL HTTPS de votre repository Github pour le projet MAVEN
+
+- La branche doit être `*/master`, ce job après avoir cloner le projet fera un checkout de la branche master
+
+- Dans la section Build, choissisez MAVEN avec comme cible : "install" 
+
+- Lancer le job manuellement en cliquant sur le bouton play
+
+- Aller dans le job sur le filesystem, afin de voir si le repo git a bien été cloner
+
+```
+  cd C:\Program Files (x86)\Jenkins\workspace/<NOM_DU_JOB>
+
+```
+
+####################################################################
+### 5- Scruter les modification de la branche master
+####################################################################
+
+- Reprendre le job précédent
+
+- Ce qui déclenche le build > Cocher => Scrutation de l'outil de gestion de version
+
+- Définir une périodicité de 5 minutes (*/5 * * * *)
+
+- Sauvegarder
+
+- Dans le projet MAVEN, modifiez un test unitaire pour qu'il sorte en erreur, faire un commit et le push sur la branche master en distant
+
+- Attendre quelques minutes pour vérifier que le job jenkins sera bien déclenché et en erreur !
+
